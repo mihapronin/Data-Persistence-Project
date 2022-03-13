@@ -5,6 +5,7 @@ using UnityEngine;
 public class DataManager : MonoBehaviour
 {
     public static DataManager Instance;
+    public string playerName;
 
     // Start is called before the first frame update
     void Start()
