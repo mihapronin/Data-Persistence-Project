@@ -64,6 +64,7 @@ public class MenuUIHandler : MonoBehaviour
         DataManager.instance.SavePlayersList();
         EditorApplication.ExitPlaymode();
 #else
+        DataManager.instance.SavePlayersList();
         Application.Quit();
 #endif
     }
