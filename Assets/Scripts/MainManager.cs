@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainManager : MonoBehaviour
 {
     public Brick brickPrefab;
-    public int lineCount = 6;
     public Rigidbody ball;
+    public int lineCount = 6;
 
-    public Text scoreText;
-    public Text bestScoreText;
+    //public Text scoreText;
+    //public Text bestScoreText;
+    public TextMeshProUGUI currentScoreText;
+    public TextMeshProUGUI theBestScoreText;
     public GameObject gameOverText;
     
     private bool m_Started = false;
-    private int m_Points;
-    
     private bool m_GameOver = false;
+    private int m_Points;
 
-    
     // Start is called before the first frame update
     void Start()
     {
@@ -76,14 +77,14 @@ public class MainManager : MonoBehaviour
     {
         if (DataManager.instance.playersList.Count != 0)
         {
-            bestScoreText.text = $"Name : {DataManager.instance.playersList[0].playerName} Score : {DataManager.instance.playersList[0].playerScore}";
+            theBestScoreText.text = $"The best : {DataManager.instance.playersList[0].playerName} Score : {DataManager.instance.playersList[0].playerScore}";
         }
     }
 
     void AddPoint(int point)
     {
         m_Points += point;
-        scoreText.text = $"Name : {DataManager.instance.currentPlayerName} Score : {m_Points}";
+        currentScoreText.text = $"You : {DataManager.instance.currentPlayerName} Score : {m_Points}";
     }
 
     public void GameOver()
@@ -91,12 +92,7 @@ public class MainManager : MonoBehaviour
         m_GameOver = true;
         gameOverText.SetActive(true);
 
-        Debug.Log("Game Over");
-
         DataManager.instance.playersList.Add(new Player(DataManager.instance.currentPlayerName, m_Points));
-
-        Debug.Log("Current Game Added");
-
         DataManager.instance.playersList.Sort();
         DataManager.instance.playersList.Reverse();
     }
