@@ -16,7 +16,18 @@ public class MenuUIHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DataManager.instance.LoadPlayersList();
+        if (DataManager.instance.playersList.Count == 0)
+        {
+            DataManager.instance.LoadPlayersList();
+        }
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 
     public void StartNew()
@@ -42,9 +53,15 @@ public class MenuUIHandler : MonoBehaviour
         }
     }
 
+    public void ViewTopList()
+    {
+        SceneManager.LoadScene(2);
+    }
+
     public void ExitGame()
     {
 #if UNITY_EDITOR
+        DataManager.instance.SavePlayersList();
         EditorApplication.ExitPlaymode();
 #else
         Application.Quit();

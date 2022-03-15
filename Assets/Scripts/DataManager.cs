@@ -8,9 +8,7 @@ public class DataManager : MonoBehaviour
 {
     public static DataManager instance;
     public string currentPlayerName;
-    //public int currentPlayerScore;
     public List<Player> playersList;
-
 
     private void Awake()
     {
@@ -22,7 +20,6 @@ public class DataManager : MonoBehaviour
 
         instance = this;
         DontDestroyOnLoad(gameObject);
-
     }
 
     public void SavePlayersList()
@@ -46,11 +43,12 @@ public class DataManager : MonoBehaviour
 
             playersList = data.players;
         }
-        else if (playersList == null)
-        {
-            playersList = new List<Player>();
-        }
     }
+}
+
+class SaveTestData
+{
+    public string playerName;
 }
 
 [System.Serializable]
@@ -59,6 +57,7 @@ class SavedPlayersList
     public List<Player> players;
 }
 
+[System.Serializable]
 public class Player : IComparable<Player>
 {
     public string playerName;
@@ -79,4 +78,5 @@ public class Player : IComparable<Player>
         return playerScore - other.playerScore;
     }
 }
+
 
