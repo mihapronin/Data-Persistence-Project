@@ -1,33 +1,82 @@
+using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour
 {
-    public static DataManager Instance;
-    public string playerName;
+    public static DataManager instance;
+    public string currentPlayerName;
+    //public int currentPlayerScore;
+    public List<Player> playersList;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     private void Awake()
     {
-        if (Instance != null)
+        if (instance != null)
         {
             Destroy(gameObject);
             return;
         }
 
-        Instance = this;
+        instance = this;
         DontDestroyOnLoad(gameObject);
+
+    }
+
+    public void SavePlayersList()
+    {
+        SavedPlayersList data = new SavedPlayersList();
+        data.players = playersList;
+
+        string jsonData = JsonUtility.ToJson(data);
+
+        File.WriteAllText(Application.persistentDataPath + "/playerslist.json", jsonData);
+    }
+
+    public void LoadPlayersList()
+    {
+        string path = Application.persistentDataPath + "/playerslist.json";
+
+        if (File.Exists(path))
+        {
+            string jsonAdata = File.ReadAllText(path);
+            SavedPlayersList data = JsonUtility.FromJson<SavedPlayersList>(jsonAdata);
+
+            playersList = data.players;
+        }
+        else if (playersList == null)
+        {
+            playersList = new List<Player>();
+        }
     }
 }
+
+[System.Serializable]
+class SavedPlayersList
+{
+    public List<Player> players;
+}
+
+public class Player : IComparable<Player>
+{
+    public string playerName;
+    public int playerScore;
+
+    public Player(string newPlayerName, int newPlayerScore)
+    {
+        playerName = newPlayerName;
+        playerScore = newPlayerScore;
+    }
+
+    public int CompareTo(Player other)
+    {
+        if (other == null)
+        {
+            return 1;
+        }
+        return playerScore - other.playerScore;
+    }
+}
+

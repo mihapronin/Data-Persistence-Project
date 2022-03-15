@@ -9,24 +9,37 @@ using TMPro;
 
 public class MenuUIHandler : MonoBehaviour
 {
-    public TMP_InputField enteredText;
+    public TMP_InputField enteredName;
+    public GameObject hintNameText;
     private string playerName;
 
     // Start is called before the first frame update
     void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        DataManager.instance.LoadPlayersList();
     }
 
     public void StartNew()
     {
-        SceneManager.LoadScene(1);
+        if (playerName != null && playerName != "")
+        {
+            DataManager.instance.currentPlayerName = playerName;
+            SceneManager.LoadScene(1);
+        }
+        else
+        {
+            Debug.Log("Enter you name");
+            StartCoroutine("BlinkTimer");
+        }
+    }
+
+    IEnumerator BlinkTimer()
+    {
+        for (int i = 0; i < 6; i++)
+        {
+            hintNameText.SetActive(i % 2 == 0);
+            yield return new WaitForSeconds(0.3f);
+        }
     }
 
     public void ExitGame()
@@ -38,10 +51,8 @@ public class MenuUIHandler : MonoBehaviour
 #endif
     }
 
-    public void ReadEnteredName()
+    public void SetCurrentPlayerName()
     {
-        playerName = enteredText.text;
-        DataManager.Instance.playerName = playerName;
+        playerName = enteredName.text;
     }
-
 }

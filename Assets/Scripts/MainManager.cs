@@ -24,6 +24,8 @@ public class MainManager : MonoBehaviour
     {
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
+
+        AddPoint(0);
         
         int[] pointCountArray = new [] {1,1,2,2,5,5};
         for (int i = 0; i < LineCount; ++i)
@@ -57,7 +59,7 @@ public class MainManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                SceneManager.LoadScene(1);
             }
             
             else if (Input.GetKeyDown(KeyCode.Escape))
@@ -70,12 +72,19 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"Score : {m_Points}";
+        ScoreText.text = $"Name : {DataManager.instance.currentPlayerName} Score : {m_Points}";
     }
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+
+        DataManager.instance.playersList.Add(new Player(DataManager.instance.currentPlayerName, m_Points));
+
+        foreach (Player player in DataManager.instance.playersList)
+        {
+            Debug.Log(player.playerName + ": " + player.playerScore);
+        }
     }
 }
