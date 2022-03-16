@@ -75,7 +75,7 @@ public class Player : IComparable<Player>
         {
             return 1;
         }
-        return playerScore - other.playerScore;
+        return other.playerScore - playerScore;
     }
 }
 

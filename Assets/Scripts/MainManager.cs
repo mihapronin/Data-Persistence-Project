@@ -94,6 +94,5 @@ public class MainManager : MonoBehaviour
 
         DataManager.instance.playersList.Add(new Player(DataManager.instance.currentPlayerName, m_Points));
         DataManager.instance.playersList.Sort();
-        DataManager.instance.playersList.Reverse();
     }
 }
